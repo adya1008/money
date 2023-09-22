@@ -18,3 +18,23 @@ public class money {
     public static void main(String[] args) throws Exception {
         // set startTime to measure how long the program takes
         long startTime = System.currentTimeMillis();
+
+        // create input BufferedReader from file
+        BufferedReader br = new BufferedReader(new FileReader("money.in"));
+
+        // read first line with V and N
+        StringTokenizer l = new StringTokenizer(br.readLine());
+
+        // get V, the number of coins in the system
+        int V = Integer.parseInt(l.nextToken());
+
+        // get N, the amount money to construct
+        int N = Integer.parseInt(l.nextToken());
+
+        // DEBUG System.out.println(V+" "+N);
+
+        // array of the number of ways in which to get a sum of N
+        long[] ways = new long[N + 1];
+
+        // array of coin values
+        int[] coins = new int[V];
