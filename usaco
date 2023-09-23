@@ -73,3 +73,13 @@ public class ttwo {
                 farmerX = x;
                 farmerY = y;
             }
+
+         for (int i = 0; i < cowXs.size(); i++) {
+                x = cowXs.get(i) + dirX[cowDirs.get(i)];
+                y = cowYs.get(i) + dirY[cowDirs.get(i)];
+                if (x >= 10 || x < 0 || y >= 10 || y < 0 || grid[y][x] == '*' || grid[y][x] == 'C') {
+                    cowDirs.set(i, (cowDirs.get(i) + 1) % 4);
+                } else {
+                    cowXs.set(i, x);
+                    cowYs.set(i, y);
+                }
