@@ -65,7 +65,7 @@ public class ttwo {
         int minutes = 0;
         while (!works) {
             int x = farmerX + dirX[farmerDir];
-            int y = farmerY + dirY[farmerDir];
+            int y = farmerY + dirY[farme()rDir];
             if (x >= 10 || x < 0 || y >= 10 || y < 0 || grid[y][x] == '*') {
                 farmerDir++;
                 farmerDir %= 4;
@@ -83,3 +83,13 @@ public class ttwo {
                     cowXs.set(i, x);
                     cowYs.set(i, y);
                 }
+                if (cowXs.get(i).equals(farmerX) && cowYs.get(i).equals(farmerY)) {
+                    works = true;
+                }
+            }
+            if (minutes > 100000) {
+                break;
+            }
+            minutes++;
+            // DEBUG System.out.println(minutes);
+        }
