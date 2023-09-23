@@ -2,7 +2,7 @@
 /*
 ID: 100021881
 LANG: JAVA
-PROG: tamworthtwo
+PROG: overfencing
 */
 
 // if you want to turn all the debug on, just find and replace "// DEBUG " with nothing
@@ -18,89 +18,50 @@ import java.util.StringTokenizer;
 import java.util.List;
 import java.util.ArrayList;
 
-public class ttwo {
+public class maze1 {
     public static void main(String[] args) throws Exception {
         // set startTime to measure how long the program takes
         long startTime = System.currentTimeMillis();
 
         // create input BufferedReader from file
-        BufferedReader br = new BufferedReader(new FileReader("ttwo.in"));
-        char[][] grid = new char[10][10];
-        int count = 0;
-        String line;
-        while ((line = br.readLine()) != null) {
-            grid[count] = line.toCharArray();
-            count++;
-        }
-        br.close();
-        int[] dirX = new int[] { 1, 0, -1, 0 };
-        int[] dirY = new int[] { 0, 1, 0, -1 };
-
-        int farmerX = -1;
-        int farmerY = -1;
-        int farmerDir = 3;
-
-        List<Integer> cowXs = new ArrayList<>();
-        List<Integer> cowYs = new ArrayList<>();
-        List<Integer> cowDirs = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (grid[i][j] == 'F') {
-                    farmerY = i;
-                    farmerX = j;
-                    grid[i][j] = '.';
-                } else if (grid[i][j] == 'C') {
-                    cowXs.add(j);
-                    cowYs.add(i);
-                    cowDirs.add(3);
-                    grid[i][j] = '.';
-                }// DEBUG  else if (grid[i][j] != '.' && grid[i][j] != '*') {
-                // DEBUG     System.out.println(i + " " + j + " " + grid[i][j]);
-                // DEBUG }
+        BufferedReader br = new BufferedReader(new FileReader("maze1.in"));
+        StringTokenizer l = new StringTokenizer(br.readLine());
+        int W = Integer.parseInt(l.nextToken());
+        int H = Integer.parseInt(l.nextToken());
+        Node[] graph = new Node[W * H];
+        System.out.println(W+" "+H);
+        for (int i = 0; i < W; i++) {
+            for (int j = 0; j < H; j++) {
+                // DEBUG System.out.println(j * W + i);
+                graph[j * W + i] = new Node();
             }
-            // DEBUG System.out.println(grid[i]);
         }
-        boolean works = false;
-        int minutes = 0;
-        while (!works) {
-            int x = farmerX + dirX[farmerDir];
-            int y = farmerY + dirY[farmerDir];
-            if (x >= 10 || x < 0 || y >= 10 || y < 0 || grid[y][x] == '*') {
-                farmerDir++;
-                farmerDir %= 4;
-            } else {
-                farmerX = x;
-                farmerY = y;
-            }
-            for (int i = 0; i < cowXs.size(); i++) {
-                x = cowXs.get(i) + dirX[cowDirs.get(i)];
-                y = cowYs.get(i) + dirY[cowDirs.get(i)];
-                if (x >= 10 || x < 0 || y >= 10 || y < 0 || grid[y][x] == '*' || grid[y][x] == 'C') {
-                    cowDirs.set(i, (cowDirs.get(i) + 1) % 4);
-                } else {
-                    cowXs.set(i, x);
-                    cowYs.set(i, y);
+        char[][] input = new char[2 * H + 1][2 * W + 1];
+        for (int i = 0; i < 2 * H + 1; i++) {
+            input[i] = br.readLine().toCharArray();
+        }
+        for (int i = 1; i < 2 * W + 1; i += 2) {
+            for (int j = 1; j < 2 * H + 1; j += 2) {
+                if (!(input[j][i] == ' ')) {
+                    break;
                 }
-                if (cowXs.get(i).equals(farmerX) && cowYs.get(i).equals(farmerY)) {
-                    works = true;
+                int x = (i - 1) / 2;
+                int y = (j - 1) / 2;
+                int num = y * W + x;
+                //List<Integer> temp = new ArrayList<>();
+                // DEBUG System.out.println(y + " " + x + " " + num);
+                if (x > 0 && input[j][i - 1] == ' ' && num - 1 >= 0) {
+                    graph[num].edges.add(new Edge(y*W+x-1, 1));
+                }
+                if (x < W-1 && input[j][i + 1] == ' ' && num + 1 < W * H) {
+                    graph[num].edges.add(new Edge(y*W+x+1, 1));
+                }
+                if (y > 0 && input[j - 1][i] == ' ' && num - W >= 0) {
+                    graph[num].edges.add(new Edge((y-1)*W+x, 1));
+                }
+                if (y < H-1 && input[j + 1][i] == ' ' && num + W < W * H) {
+                    graph[num].edges.add(new Edge((y+1)*W+x, 1));
                 }
             }
-            if (minutes > 100000) {
-                break;
-            }
-            minutes++;
-            // DEBUG System.out.println(minutes);
         }
 
-        // create PrintWriter to output results
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("ttwo.out")));
-        if (works)
-            out.println(minutes);
-        else
-            out.println(0);
-        out.close();
-        // print final time taken
-        System.out.println(System.currentTimeMillis() - startTime);
-    }
-}
