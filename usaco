@@ -2,10 +2,10 @@
 /*
 ID: 100021881
 LANG: JAVA
-PROG: concom
+PROG: ttwo
 */
 
-// if you want to turn all the debug on, just find and replace "// @DEBUG " with nothing
+// if you want to turn all the debug on, just find and replace "// DEBUG " with nothing
 
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -18,58 +18,58 @@ import java.util.StringTokenizer;
 import java.util.List;
 import java.util.ArrayList;
 
-public class concom {
-    public static int max = 100;
-    public static int[][] owns = new int[max + 1][max + 1];
-    public static boolean[][] controls = new boolean[max + 1][max + 1];
-
+public class ttwo {
     public static void main(String[] args) throws Exception {
         // set startTime to measure how long the program takes
         long startTime = System.currentTimeMillis();
 
         // create input BufferedReader from file
-        BufferedReader br = new BufferedReader(new FileReader("concom.in"));
-
-        // get N, the number of input triples to follow
-        int N = Integer.parseInt(br.readLine());
-
-        // DEBUG System.out.println(N);
-
-
-        // i always controls itself
-        for (int i = 0; i <= max; i++) {
-            controls[i][i] = true;
+        BufferedReader br = new BufferedReader(new FileReader("ttwo.in"));
+        char[][] grid = new char[10][10];
+        int count = 0;
+        String line;
+        while ((line = br.readLine()) != null) {
+            grid[count] = line.toCharArray();
+            count++;
         }
-        
-        
-        for (int i = 0; i < N; i++) {
-            StringTokenizer l = new StringTokenizer(br.readLine());
-            addOwner(Integer.parseInt(l.nextToken()), Integer.parseInt(l.nextToken()), Integer.parseInt(l.nextToken()));
-        }
-        // DEBUG for (int i = 0; i <= max; i++) {
-        // DEBUG System.out.println(Arrays.toString(Arrays.copyOfRange(stakes[i], 0, max
-        // + 1)));
-        // DEBUG }
         br.close();
+        int[] dirX = new int[] { 1, 0, -1, 0 };
+        int[] dirY = new int[] { 0, 1, 0, -1 };
 
-        // create PrintWriter to output results
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("concom.out")));
+        int farmerX = -1;
+        int farmerY = -1;
+        int farmerDir = 3;
 
-        for (int i = 0; i <= max; i++) {
-            for (int j = 0; j <= max; j++) {
-                if (i!=j && controls[i][j]) {
-                    out.println(i + " " + j);
-                }
+        List<Integer> cowXs = new ArrayList<>();
+        List<Integer> cowYs = new ArrayList<>();
+        List<Integer> cowDirs = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (grid[i][j] == 'F') {
+                    farmerY = i;
+                    farmerX = j;
+                    grid[i][j] = '.';
+                } else if (grid[i][j] == 'C') {
+                    cowXs.add(j);
+                    cowYs.add(i);
+                    cowDirs.add(3);
+                    grid[i][j] = '.';
+                }// DEBUG  else if (grid[i][j] != '.' && grid[i][j] != '*') {
+                // DEBUG     System.out.println(i + " " + j + " " + grid[i][j]);
+                // DEBUG }
             }
+            // DEBUG System.out.println(grid[i]);
         }
-        out.close();
-        // print final time taken
-        System.out.println(System.currentTimeMillis() - startTime);
-    }
-
-    public static void addController(int i, int j) {
-        // DEBUG System.out.println("addController: "+i+" "+j);
-        // ignore if already controlling
-        if (controls[i][j]) {
-            return;
-        }
+        boolean works = false;
+        int minutes = 0;
+        while (!works) {
+            int x = farmerX + dirX[farmerDir];
+            int y = farmerY + dirY[farmerDir];
+            if (x >= 10 || x < 0 || y >= 10 || y < 0 || grid[y][x] == '*') {
+                farmerDir++;
+                farmerDir %= 4;
+            } else {
+                farmerX = x;
+                farmerY = y;
+            }
