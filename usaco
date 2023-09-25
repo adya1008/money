@@ -2,7 +2,7 @@
 /*
 ID: 100021881
 LANG: JAVA
-PROG: maze1
+PROG: comehome
 */
 
 // if you want to turn all the debug on, just find and replace "// DEBUG " with nothing
@@ -18,50 +18,17 @@ import java.util.StringTokenizer;
 import java.util.List;
 import java.util.ArrayList;
 
-public class maze1 {
+public class comehome {
     public static void main(String[] args) throws Exception {
         // set startTime to measure how long the program takes
         long startTime = System.currentTimeMillis();
 
         // create input BufferedReader from file
-        BufferedReader br = new BufferedReader(new FileReader("maze1.in"));
-        StringTokenizer l = new StringTokenizer(br.readLine());
-        int W = Integer.parseInt(l.nextToken());
-        int H = Integer.parseInt(l.nextToken());
-        Node[] graph = new Node[W * H];
-        System.out.println(W+" "+H);
-        for (int i = 0; i < W; i++) {
-            for (int j = 0; j < H; j++) {
-                // DEBUG System.out.println(j * W + i);
-                graph[j * W + i] = new Node();
-            }
-        }
-        char[][] input = new char[2 * H + 1][2 * W + 1];
-        for (int i = 0; i < 2 * H + 1; i++) {
-            input[i] = br.readLine().toCharArray();
-        }
-        for (int i = 1; i < 2 * W + 1; i += 2) {
-            for (int j = 1; j < 2 * H + 1; j += 2) {
-                if (!(input[j][i] == ' ')) {
-                    break;
-                }
-                int x = (i - 1) / 2;
-                int y = (j - 1) / 2;
-                int num = y * W + x;
-                //List<Integer> temp = new ArrayList<>();
-                // DEBUG System.out.println(y + " " + x + " " + num);
-                if (x > 0 && input[j][i - 1] == ' ' && num - 1 >= 0) {
-                    graph[num].edges.add(new Edge(y*W+x-1, 1));
-                }
-                if (x < W-1 && input[j][i + 1] == ' ' && num + 1 < W * H) {
-                    graph[num].edges.add(new Edge(y*W+x+1, 1));
-                }
-                if (y > 0 && input[j - 1][i] == ' ' && num - W >= 0) {
-                    graph[num].edges.add(new Edge((y-1)*W+x, 1));
-                }
-                if (y < H-1 && input[j + 1][i] == ' ' && num + W < W * H) {
-                    graph[num].edges.add(new Edge((y+1)*W+x, 1));
-                }
-            }
-        }
+        BufferedReader br = new BufferedReader(new FileReader("comehome.in"));
 
+        int P = Integer.parseInt(br.readLine());
+        boolean[] hasCow = new boolean[52];
+        Node[] pastures = new Node[52];
+        for (int i = 0; i < 52; i++) {
+            pastures[i] = new Node();
+        }
