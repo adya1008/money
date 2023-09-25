@@ -17,7 +17,22 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.List;
 import java.util.ArrayList;
- for (int i = 0; i < P; i++) {
+
+public class comehome {
+    public static void main(String[] args) throws Exception {
+        // set startTime to measure how long the program takes
+        long startTime = System.currentTimeMillis();
+
+        // create input BufferedReader from file
+        BufferedReader br = new BufferedReader(new FileReader("comehome.in"));
+
+        int P = Integer.parseInt(br.readLine());
+        boolean[] hasCow = new boolean[52];
+        Node[] pastures = new Node[52];
+        for (int i = 0; i < 52; i++) {
+            pastures[i] = new Node();
+        }
+        for (int i = 0; i < P; i++) {
             StringTokenizer line = new StringTokenizer(br.readLine());
             char t = line.nextToken().charAt(0);
             int first = -1;
@@ -46,17 +61,3 @@ import java.util.ArrayList;
             pastures[second].edges.add(new Edge(first, distance));
         }
         br.close();
-public class comehome {
-    public static void main(String[] args) throws Exception {
-        // set startTime to measure how long the program takes
-        long startTime = System.currentTimeMillis();
-
-        // create input BufferedReader from file
-        BufferedReader br = new BufferedReader(new FileReader("comehome.in"));
-
-        int P = Integer.parseInt(br.readLine());
-        boolean[] hasCow = new boolean[52];
-        Node[] pastures = new Node[52];
-        for (int i = 0; i < 52; i++) {
-            pastures[i] = new Node();
-        }
