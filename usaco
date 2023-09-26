@@ -123,3 +123,12 @@ public class agrinet {
             this.inTree = false;
             this.source = -1;
         }
+
+        public void set() {
+            this.distance = Integer.MAX_VALUE;
+            this.inTree = false;
+            this.source = -1;
+        }
+    }
+}
+
