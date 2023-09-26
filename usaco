@@ -1,7 +1,7 @@
 /*
 ID: 100021881
 LANG: JAVA
-PROG: agrinet
+PROG: contact
 */
 
 // if you want to turn all the debug on, just find and replace "// DEBUG " with nothing
@@ -13,122 +13,70 @@ import java.io.BufferedWriter;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.List;
 import java.util.ArrayList;
 
-public class agrinet {
-    private static int N;
-    private static int[][] dist;
-    private static Node[] nodes;
-
-
+public class contact {
     public static void main(String[] args) throws Exception {
         // set startTime to measure how long the program takes
         long startTime = System.currentTimeMillis();
 
         // create input BufferedReader from file
-        BufferedReader br = new BufferedReader(new FileReader("agrinet.in"));
+        BufferedReader br = new BufferedReader(new FileReader("contact.in"));
 
-        N = Integer.parseInt(br.readLine());
-        dist = new int[N][N];
-        nodes = new Node[N];
-        for (int i = 0; i < N; i++) {
-            String line = br.readLine();
-            StringTokenizer l;
-            while ((l = new StringTokenizer(line)).countTokens()<N) {
-                line+=" "+br.readLine();
-            }
-            //System.out.println(i);
-            for (int j = 0; j < N; j++) {
-                dist[i][j] = Integer.parseInt(l.nextToken());
-                //System.out.println(j + "\t"+dist[i][j]);
-            }
+        StringTokenizer l = new StringTokenizer(br.readLine());
+        
+        int A = Integer.parseInt(l.nextToken()); //minimum pattern length
+        int B = Integer.parseInt(l.nextToken()); //maximum pattern length
+        int N = Integer.parseInt(l.nextToken()); //number of patterns to find
+
+        StringBuilder build = new StringBuilder();
+        String line;
+
+        while ((line = br.readLine())!=null) {
+            build.append(line);
         }
 
         br.close();
 
-        System.out.println(System.currentTimeMillis() - startTime);
+        int len = build.length();
+        int[] totals = new int[(int)Math.pow(2, B+1)];
 
-        int res = solve();
-
-
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("agrinet.out")));
-        out.println(res);
-        out.close();
-        // print final time taken
-        System.out.println(System.currentTimeMillis() - startTime);
-    }
-
-    public static int solve() {
-        // distance(j) is distance from tree to node j
-        // source(j) is which node of so-far connected MST is closest to node j
-        for (int i = 0; i < N; i++) {
-            nodes[i] = new Node();
-        }
-        int treesize = 1;                    // add node 1 to tree
-        int treecost = 0; 
-        nodes[0].inTree = true;
-        nodes[0].distance = 0;
-        nodes[0].source = -1;
-        for (int j = 1; j < N; j++) {
-            if (dist[0][j]!=-1) {
-                nodes[j].distance=dist[0][j];
-                nodes[j].source=0;
-            }
-        }
-
-        while (treesize < N) {
-            // find node with minimum distance to tree; call it node i
-            int mini = 0;
-            int min = Integer.MAX_VALUE;
-            for (int i = 0; i < N; i++) {
-                if (!nodes[i].inTree && nodes[i].distance < min) {
-                    min = nodes[i].distance;
-                    mini = i;
-                }
-            }
-            if (min == Integer.MAX_VALUE) {
-                System.out.println("Graph Is Not Connected");
-                return -1;
-            }
-            // add edge source(i),i to MST
-            treesize++;
-            treecost += min;
-            nodes[mini].inTree = true;  // mark node i as in tree 
-
-            // update distance after node i added
-            for (int j = 0; j < N; j++) {
-                if (nodes[j].distance > dist[mini][j]) {
-                    nodes[j].distance=dist[mini][j];
-                    nodes[j].source=mini;
+        System.out.println("len: "+len);
+        System.out.println("totals.length: "+totals.length);
+        for (int i = A; i <= B; i++) { // length of i
+            for (int j = 0; j < i; j++) { // offset of j
+                for (int k = j; k <= len-i; k+=i) { // start at k
+                    int range = Integer.parseInt("1"+build.substring(k, k+i), 2);
+                    // DEBUG System.out.println(k+"\t"+i+"\t"+build.substring(k, k+i));
+                    totals[range]++;
                 }
             }
         }
-        return treecost;
-    }
-    public static class Node {
-        int distance;
-        boolean inTree;
-        int source;
-
-        public Node(int distance, boolean inTree, int source) {
-            this.distance = distance;
-            this.inTree = inTree;
-            this.source = source;
+        int max = 0;
+        for (int i = 2; i < totals.length; i++) {
+            if (totals[i]>max) {
+                max=totals[i];
+            }
         }
 
-        public Node() {
-            this.distance = Integer.MAX_VALUE;
-            this.inTree = false;
-            this.source = -1;
+        List<List<Integer>> results = new ArrayList<>();
+        for (int i = 0; i <= max; i++) {
+            results.add(new ArrayList<>());
         }
-
-        public void set() {
-            this.distance = Integer.MAX_VALUE;
-            this.inTree = false;
-            this.source = -1;
+        for (int i = (int)Math.max(2, Math.pow(2, A)); i < totals.length; i++) {
+            results.get(totals[i]).add(i);
         }
-    }
-}
-
+        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("contact.out")));
+        int totalPrinted = 0;
+        for (int i = max; i > 0; i--) {
+            if (totalPrinted>=N) {
+                break;
+            }
+            if (results.get(i).size()==0) {
+                continue;
+            }
