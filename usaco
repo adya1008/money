@@ -14,7 +14,29 @@ import java.io.BufferedWriter;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 import java.lang.StringBuilder;
- int remainderN = N % D;
+
+public class fracdec {
+    public static void main(String[] args) throws Exception {
+        // set startTime to measure how long the program takes
+        long startTime = System.currentTimeMillis();
+
+        // create input BufferedReader from file
+        BufferedReader br = new BufferedReader(new FileReader("fracdec.in"));
+
+        // read first line with V and N
+        StringTokenizer l = new StringTokenizer(br.readLine());
+
+        // get V, the number of coins in the system
+        int N = Integer.parseInt(l.nextToken());
+
+        // get N, the amount fracdec to construct
+        int D = Integer.parseInt(l.nextToken());
+
+        br.close();
+
+
+
+        int remainderN = N % D;
         int wholeN = N - remainderN;
         StringBuilder str = new StringBuilder();
         str.append(String.valueOf(wholeN / D));
@@ -58,12 +80,3 @@ import java.lang.StringBuilder;
             res+="0";
         }
         System.out.println(res);
-
-
-        // create PrintWriter to output results
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("fracdec.out")));
-        out.println(res);
-        out.close();
-        System.out.println(System.currentTimeMillis() - startTime);
-    }
-}
