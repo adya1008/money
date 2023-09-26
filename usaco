@@ -63,14 +63,7 @@ public class fracdec {
                         works = false;
                         System.out.println(j);
                         break;
-                    }                           
-                }
-                if (works) {
-                    break loop;
-                }
-            }
-        }
-        System.out.println(i+"\t"+beginning);
+   System.out.println(i+"\t"+beginning);
         String res = "";
         res+=s.substring(0, i);
         if (!(j==1&&s.charAt(i+1)=='0')) {
@@ -81,4 +74,15 @@ public class fracdec {
         System.out.println(res);
 
 
-
+        // create PrintWriter to output results
+        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("fracdec.out")));
+        out.println(res);
+        out.close();
+        System.out.println(System.currentTimeMillis() - startTime);
+    }
+}
+                    }                           
+                }
+                if (works) {
+                    break loop;
+                }
