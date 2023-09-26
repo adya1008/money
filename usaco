@@ -80,3 +80,12 @@ public class fracdec {
             res+="0";
         }
         System.out.println(res);
+
+
+        // create PrintWriter to output results
+        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("fracdec.out")));
+        out.println(res);
+        out.close();
+        System.out.println(System.currentTimeMillis() - startTime);
+    }
+}
