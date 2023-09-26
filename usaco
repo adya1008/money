@@ -1,68 +1,74 @@
-#include <iostream.h>
-#include <fstream.h>
-#include <math.h>
-ofstream out("fracdec.out");
+/*
+ ID: wcr19961
+ PROG: fracdec
+ LANG: C++11
+*/
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+#include <cmath>
+#include <set>
+using namespace std;
 
-int colcount=0;
-
-int numBeforeRepeat(int n, int d) {
-    int c2=0, c5=0;
-    if (n == 0) return 1;
-    while (d%2==0) { d/=2; c2++; }
-    while (d%5==0) { d/=5; c5++; }
-    while (n%2==0) { n/=2; c2--; } /* can go negative */
-    while (n%5==0) { n/=5; c5--; } /* can go negative */
-    if (c2>c5)
-        if (c2>0) return c2;
-        else return 0;
-    else
-        if (c5>0) return c5;
-        else return 0;
-}
-
-void print (char c) {
-    if (colcount==76) {
-        out<<endl;
-        colcount=0;
-    }
-    out<<c;
-    colcount++;
-}
-
-void print (int n) {
-    if (n>=10) print (n/10);
-    print ((char)('0'+(n%10)));
-}
-
+set<int> s;
 int main() {
-    int n, d;
-    ifstream in("fracdec.in");
-    in>>n>>d;
-    in.close();
-
-    print (n/d);
-    print ('.');
-    n=n%d;
-    int m=numBeforeRepeat(n,d);
-    for(int i=0;i<m;i++) {
-        n*=10;
-	print (n/d);
-        n%=d;
+  freopen("fracdec.in", "r", stdin);
+  freopen("fracdec.out", "w", stdout);
+  int n, d;
+  scanf("%d%d", &n, &d);
+  int x = n / d;
+  printf("%d.", x);
+  n %= d;
+  if (n == 0) {
+    puts("0");
+    return 0;
+  }
+  int tmp = n, len = (x == 0 ? 0 : floor(log10(x))) + 2;
+  bool ok = false;
+  while (n) {
+    if (s.count(n)) {
+      ok = true;
+      break;
     }
-    int r=n;
-    if(r!=0) {
-	print ('(');
-        do {
-            n*=10;
-	    print (n/d);
-            n%=d;
-        } while (n!=r);
-	print (')');
+    s.insert(n);
+    n *= 10;
+    n -= n / d * d;
+  }
+  swap(tmp, n);
+  if (tmp == 0) {
+    while (n) {
+      n *= 10;
+      printf("%d", n / d);
+      if (++len % 76 == 0) {
+        puts("");
+      }
+      n -= n / d * d;
     }
-    out<<endl;
-    out.close();
-    exit (0);
+  } else {
+    int cnt = 0;
+    for (;;) {
+      if (n == tmp) {
+        if (cnt == 0) {
+          putchar('(');
+        } else {
+          putchar(')');
+          break;
+        }
+        if (++len % 76 == 0) {
+          puts("");
+        }
+        ++cnt;
+      }
+      n *= 10;
+      printf("%d", n / d);
+      if (++len % 76 == 0) {
+        puts("");
+      }
+      n -= n / d * d;
+    }
+  }
+  if (len % 76) {
+    puts("");
+  }
+  return 0;
 }
------------------------------------
-USACO section 2.4 Fractions to Decimals(小数处理)
-https://blog.51cto.com/u_15127541/3565902
