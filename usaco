@@ -2,7 +2,7 @@
 /*
 ID: 100021881
 LANG: JAVA
-PROG: comehome
+PROG: fracdec
 */
 
 // if you want to turn all the debug on, just find and replace "// DEBUG " with nothing
@@ -12,52 +12,25 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.List;
 import java.util.StringTokenizer;
-import java.util.List;
-import java.util.ArrayList;
+import java.lang.StringBuilder;
 
-public class comehome {
+public class fracdec {
     public static void main(String[] args) throws Exception {
         // set startTime to measure how long the program takes
         long startTime = System.currentTimeMillis();
 
         // create input BufferedReader from file
-        BufferedReader br = new BufferedReader(new FileReader("comehome.in"));
+        BufferedReader br = new BufferedReader(new FileReader("fracdec.in"));
 
-        int P = Integer.parseInt(br.readLine());
-        boolean[] hasCow = new boolean[52];
-        Node[] pastures = new Node[52];
-        for (int i = 0; i < 52; i++) {
-            pastures[i] = new Node();
-        }
-        for (int i = 0; i < P; i++) {
-            StringTokenizer line = new StringTokenizer(br.readLine());
-            char t = line.nextToken().charAt(0);
-            int first = -1;
-            if (t >= 'A' && t <= 'Z') {
-                first = t - 'A';
-                if (t != 'Z') {
-                    hasCow[first] = true;
-                }
-            } else if (t >= 'a' && t <= 'z') {
-                first = t - 'a' + 26;
-                hasCow[first] = true;
-            }
-            t = line.nextToken().charAt(0);
-            int second = -1;
-            if (t >= 'A' && t <= 'Z') {
-                second = t - 'A';
-                if (t != 'Z') {
-                    hasCow[second] = true;
-                }
-            } else if (t >= 'a' && t <= 'z') {
-                second = t - 'a' + 26;
-                hasCow[second] = true;
-            }
-            int distance = Integer.parseInt(line.nextToken());
-            pastures[first].edges.add(new Edge(second, distance));
-            pastures[second].edges.add(new Edge(first, distance));
-        }
+        // read first line with V and N
+        StringTokenizer l = new StringTokenizer(br.readLine());
+
+        // get V, the number of coins in the system
+        int N = Integer.parseInt(l.nextToken());
+
+        // get N, the amount fracdec to construct
+        int D = Integer.parseInt(l.nextToken());
+
         br.close();
+
