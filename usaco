@@ -25,6 +25,20 @@ import java.util.LinkedList;
 /*
  *
  */
+
+  for (int i = 0; i < N; i++) {
+            l = new StringTokenizer(br.readLine());
+            int points = Integer.parseInt(l.nextToken());
+            int minutes = Integer.parseInt(l.nextToken());
+            for (int j = minutes; j <= M; j++) {
+                if (data[j]<data[j-minutes]+points) {
+                    data[j] = data[j-minutes] + points;
+                }
+            }
+        }
+
+        
+ 
 public class inflate {
     public static void main(String[] args) throws Exception {
         // set startTime to measure how long the program takes
@@ -39,3 +53,6 @@ public class inflate {
         
 
         int[] data = new int[M+1];
+
+       br.close();
+
