@@ -48,7 +48,16 @@ public class fact4 {
                 }
                 digit %= 10;
             }
- public static int D (int N) {
+        }
+        */
+        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("fact4.out")));
+        //out.println(digit);
+        out.println(D(N));
+        out.close();
+        // print final time taken
+        System.out.println(System.currentTimeMillis() - startTime);
+    }
+    public static int D (int N) {
         int[] arr = new int[] {1, 1, 2, 6, 4, 2, 2, 4, 2, 8};
         if (N < 10) {
             return arr[N];
@@ -65,15 +74,4 @@ public class fact4 {
             res /= 10;
         }
         res%=10;
-        return res;
-    }
 }
-        }
-        */
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("fact4.out")));
-        //out.println(digit);
-        out.println(D(N));
-        out.close();
-        // print final time taken
-        System.out.println(System.currentTimeMillis() - startTime);
-    }
