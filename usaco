@@ -37,7 +37,19 @@ public class fact4 {
 
         br.close();
 
-        
+        /* OLD CODE
+        int digit = 1;
+        for (int i = 1; i <= N; i++) {
+            int t = i % 10;
+            if (t > 1) {
+                digit *= t;
+                while (digit % 10 == 0) {
+                    digit /= 10;
+                }
+                digit %= 10;
+            }
+        }
+        */
         PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("fact4.out")));
         //out.println(digit);
         out.println(D(N));
