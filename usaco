@@ -4,6 +4,8 @@ LANG: JAVA
 PROG: fact4
 */
 
+// if you want to turn all the debug on, just find and replace "// DEBUG " with nothing
+
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -16,7 +18,7 @@ import java.util.StringTokenizer;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.TreeMap;
-import java.util.MashMap;
+import java.util.HashMap;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -29,12 +31,13 @@ public class fact4 {
         long startTime = System.currentTimeMillis();
 
         // create input BufferedReader from file
-        BufferedReader br = new BufferedReader(new FileReader("fact4.in));
+        BufferedReader br = new BufferedReader(new FileReader("fact4.in"));
 
         int N = Integer.parseInt(br.readLine());
 
         br.close();
 
+        
         PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("fact4.out")));
         //out.println(digit);
         out.println(D(N));
